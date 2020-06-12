@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cosplay Filter</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="icon" type="image/png" href="https://bulma.io/favicons/favicon-32x32.png?v=201701041855" sizes="32x32">
+    <script src="/js/script.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
@@ -66,10 +68,10 @@
     <div id="search-div" class="hero-foot">
         <div class="field has-addons">
             <div class="control">
-                <input id="search-input" class="input" type="text" placeholder="example: anime tall human">
+                <input id="search-input" class="input" type="text" onkeyup="typingEvent(event)" placeholder="example: anime tall human">
             </div>
             <div class="control">
-                <a class="button is-info">
+                <a class="button is-info" onclick="searchCharacters()">
                     Search
                 </a>
             </div>
@@ -83,11 +85,11 @@
         <div class="columns is-centered">
             <div class="column is-four-fifths">
                 <table class="table">
-                    <thead>
+                    <thead id="table-header" style="visibility: hidden">
                     <tr>
                         <th><abbr title="Picture">Picture</abbr></th>
                         <th>Name</th>
-                        <th><abbr title="Genre">Origin</abbr></th>
+                        <th><abbr title="Genre">Genre</abbr></th>
                         <th><abbr title="Title">Title</abbr></th>
                         <th><abbr title="Gender">Gender</abbr></th>
                         <th><abbr title="Eyecolor">Eyecolor</abbr></th>
@@ -97,7 +99,7 @@
                         <th><abbr title="Other Tags">Other Tags</abbr></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="table-body">
                     <tr>
                         <th><a href="https://cdn.anisearch.de/images/character/cover/full/56/56572.jpg"><img class="table-image" src="https://cdn.anisearch.de/images/character/cover/full/56/56572.jpg" alt="Midoriya"></a></th>
                         <td>Midoriya Izuku</td>
@@ -106,7 +108,7 @@
                         <td>Male</td>
                         <td>Green</td>
                         <td>Green</td>
-                        <td>1.6m / 5"3'</td>
+                        <td>short</td>
                         <td>17</td>
                         <td>strong, will, small</td>
                     </tr>
@@ -163,7 +165,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
 </body>
 </html>
