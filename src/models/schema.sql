@@ -1,13 +1,14 @@
 CREATE TABLE IF NOT EXISTS Character (
     id MEDIUMINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(40) NOT NULL,
-    origin VARCHAR(10) NOT NULL,
+    genre VARCHAR(10) NOT NULL,
     title VARCHAR(60) NOT NULL,
     gender VARCHAR(20) NOT NULL,
     eyecolor VARCHAR(20) NOT NULL,
     haircolor VARCHAR(20) NOT NULL,
     height VARCHAR(15) NOT NULL,
-    age SMALLINT
+    age SMALLINT,
+    image VARCHAR(255)
     );
 
 

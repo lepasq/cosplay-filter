@@ -14,6 +14,7 @@ let pool = mysql.createPool({
      if(err) {
          throw err;
      }
-     console.log('Connected Database.')
-     console.log(rows[0]);
+     for(let i = 0; i<rows.length; i++) {
+         console.log(rows[i]);
+     }
  });
