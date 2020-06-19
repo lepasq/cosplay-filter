@@ -1,4 +1,4 @@
-let mysql = require('mysql');
+let mysql = require('mysql2');
 
 let pool = mysql.createPool({
     connectionLimit: process.env.CONNECTION_LIMIT,
@@ -10,11 +10,18 @@ let pool = mysql.createPool({
 });
 
 
- pool.query('SELECT c.*, c.name, GROUP_CONCAT(t.tag) as tags  FROM Cosplay.Character c, Cosplay.Tag t WHERE t.cid = c.id GROUP BY c.id;', (err, rows, fields) => {
-     if(err) {
-         throw err;
-     }
-     for(let i = 0; i<rows.length; i++) {
-         console.log(rows[i]);
-     }
- });
+pool.getAllCharacters = (callback) => {
+    return pool.query('SELECT c.*, c.name, GROUP_CONCAT(t.tag SEPARATOR ", ") as tags  FROM Cosplay.Character c, Cosplay.Tag t WHERE t.cid = c.id GROUP BY c.id;', (err, rows) => {
+        if (err) {
+            throw err;
+        } else {
+            callback(JSON.stringify(rows));
+        }
+    });
+}
+
+pool.getRankedCharacters = () => {
+
+}
+
+module.exports = {pool};

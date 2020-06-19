@@ -40,12 +40,24 @@ let entryHTML = function (param: object): string {
 function generateResult(parameters: Array<object>): void {
     document.getElementById('table-header').style.visibility = "visible";
     let tbody: any = document.getElementById('table-body');
+    let rows: string = "";
     for (let i = 0; i < parameters.length; i++) {
-        tbody.innerHTML += entryHTML(parameters[i]);
+        rows += entryHTML(parameters[i]);
     }
+    tbody.innerHTML = rows;
 }
 
 
 function addParam(param: string) {
-    return (param == undefined) ? '' : param;
+    if (param == undefined) {
+        return '';
+    } else if(param == "Anime") {
+        return ("Anime 🇯🇵");
+    } else if(param == "Gaming") {
+        return ("Gaming ");
+    } else if(param == "Movie" || param == "Series" || param == "TV") {
+        return param + "📺 ";
+    } else {
+        return param;
+    }
 }
