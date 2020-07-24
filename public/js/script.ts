@@ -8,14 +8,14 @@ function typingEvent(event): void {
 function searchCharacters(): void {
     let searchInput: HTMLInputElement = (<HTMLInputElement>(document.getElementById('search-input')));
     searchInput.placeholder = searchInput.value;
-    let tags: Array<string> = searchInput.value.split(' ');
+    let tags:string = searchInput.value.replace(" ", ";");
     searchInput.value = "";
     getCharacters(tags);
 }
 
 
-function getCharacters(tags: Array<string>): void {
-    fetch('/api/characters')
+function getCharacters(tags: string): void {
+    fetch('/api/characters?tags=' + tags)
         .then(response => response.json())
         .then(data => console.log((generateResult(data))));
 }

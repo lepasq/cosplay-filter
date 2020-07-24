@@ -20,8 +20,35 @@ pool.getAllCharacters = (callback) => {
     });
 }
 
-pool.getRankedCharacters = () => {
-
+pool.getRankedCharacters = (tags, callback) => {
+    return pool.query('SELECT DISTINCT c.*, ' +
+        'MATCH(t.tag) ' +
+        'AGAINST ("' + tags.replace(";", " ") + '" IN NATURAL LANGUAGE MODE) as tscore ' +
+        'FROM Cosplay.Character c, Cosplay.Tag t ' +
+        'WHERE t.cid = c.id ' +
+        'AND MATCH(t.tag) ' +
+        'AGAINST ("' + tags.replace(";", " ") + '"  IN NATURAL LANGUAGE MODE) ' +
+        'ORDER BY tscore DESC ' +
+        'LIMIT 20;', (err, rows) => {
+        if (err) {
+            throw err;
+        } else {
+            callback(JSON.stringify(rows));
+        }
+    });
 }
+
+/*
+SELECT DISTINCT c.*,
+       MATCH(t.tag)
+             AGAINST ("' + tags.replace(";", " ") + '" IN NATURAL LANGUAGE MODE) as tscore
+FROM Cosplay.Character c, Cosplay.Tag t
+WHERE t.cid = c.id
+  AND MATCH(t.tag)
+            AGAINST ("' + tags.replace(";", " ") + '"  IN NATURAL LANGUAGE MODE)
+ORDER BY tscore DESC
+LIMIT 20;
+ */
+
 
 module.exports = {pool};
