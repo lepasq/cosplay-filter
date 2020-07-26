@@ -22,12 +22,13 @@ pool.getAllCharacters = (callback) => {
 
 pool.getRankedCharacters = (tags, callback) => {
     return pool.query('SELECT DISTINCT c.*, ' +
-        'MATCH(t.tag) ' +
-        'AGAINST ("' + tags.replace(";", " ") + '" IN NATURAL LANGUAGE MODE) as tscore ' +
+        'SUM(MATCH(t.tag) ' +
+        'AGAINST ("' + tags.replace(";", " ") + '" IN NATURAL LANGUAGE MODE)) as tscore ' +
         'FROM Cosplay.Character c, Cosplay.Tag t ' +
         'WHERE t.cid = c.id ' +
         'AND MATCH(t.tag) ' +
         'AGAINST ("' + tags.replace(";", " ") + '"  IN NATURAL LANGUAGE MODE) ' +
+        'GROUP BY c.id ' +
         'ORDER BY tscore DESC ' +
         'LIMIT 20;', (err, rows) => {
         if (err) {
@@ -40,12 +41,13 @@ pool.getRankedCharacters = (tags, callback) => {
 
 /*
 SELECT DISTINCT c.*,
-       MATCH(t.tag)
-             AGAINST ("' + tags.replace(";", " ") + '" IN NATURAL LANGUAGE MODE) as tscore
+       SUM(MATCH(t.tag)
+             AGAINST ('mario gaming' IN NATURAL LANGUAGE MODE)) as tscore
 FROM Cosplay.Character c, Cosplay.Tag t
 WHERE t.cid = c.id
   AND MATCH(t.tag)
-            AGAINST ("' + tags.replace(";", " ") + '"  IN NATURAL LANGUAGE MODE)
+            AGAINST ('mario gaming' IN NATURAL LANGUAGE MODE)
+GROUP BY c.id
 ORDER BY tscore DESC
 LIMIT 20;
  */

@@ -32,7 +32,6 @@ let entryHTML = function (param: object): string {
         '<td>' + addParam(param['haircolor']) + '</td>' +
         '<td>' + addParam(param['height']) + '</td>' +
         '<td>' + addParam(param['age']) + '</td>' +
-        '<td>' + addParam(param['tags']) + '</td>' +
         '</tr>';
 }
 
