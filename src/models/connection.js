@@ -11,7 +11,11 @@ let pool = mysql.createPool({
 
 
 pool.getAllCharacters = (callback) => {
-    return pool.query('SELECT c.*, c.name, GROUP_CONCAT(t.tag SEPARATOR ", ") as tags  FROM Cosplay.Character c, Cosplay.Tag t WHERE t.cid = c.id GROUP BY c.id;', (err, rows) => {
+    return pool.query('SELECT c.*, c.name, ' +
+        'GROUP_CONCAT(t.tag SEPARATOR ", ") as tags  ' +
+        'FROM Cosplay.Character c, Cosplay.Tag t ' +
+        'WHERE t.cid = c.id ' +
+        'GROUP BY c.id;', (err, rows) => {
         if (err) {
             throw err;
         } else {
@@ -23,16 +27,7 @@ pool.getAllCharacters = (callback) => {
 pool.getRankedCharacters = (tags, callback) => {
     let tagList = tags.split(";").filter(a => !a.includes("=")).toString();
     let equalsList = tags.split(";").filter(a => a.includes("="));
-    let query = 'SELECT DISTINCT c.*, ' +
-        'SUM(MATCH(t.tag) ' +
-        'AGAINST ("' + tagList.split(",").join(" ").split("]").join("+") + '" IN BOOLEAN MODE)) as tscore ' +
-        'FROM Cosplay.Character c, Cosplay.Tag t ' +
-        'WHERE t.cid = c.id ' +
-        generateEqualQuery(equalsList) +
-        generateTextSearch(tagList) +
-        'GROUP BY c.id ' +
-        'ORDER BY tscore DESC ' +
-        'LIMIT 20;';
+    let query = rankedQuery(tagList, equalsList);
     console.log(query)
     return pool.query(query, (err, rows) => {
         if (err) {
@@ -46,8 +41,8 @@ pool.getRankedCharacters = (tags, callback) => {
 
 function generateEqualQuery(equalParam) {
     let query = "";
-    for(let i = 0; i<equalParam.length; i++) {
-        let param =  equalParam[i].split("=");
+    for (let i = 0; i < equalParam.length; i++) {
+        let param = equalParam[i].split("=");
         query += "AND " + param[0] + " ='" + param[1] + "' "
     }
     return query;
@@ -55,12 +50,28 @@ function generateEqualQuery(equalParam) {
 
 function generateTextSearch(tagList) {
     let query = " ";
-    if(tagList) {
+    if (tagList) {
         query =
             'AND MATCH(t.tag) ' +
-            'AGAINST ("' + tagList.split(",").join(" ").split("]").join("+")  + '" IN BOOLEAN MODE) ';
+            'AGAINST ("' + tagList.split(",").join(" ").split("]").join("+")
+            + '" IN BOOLEAN MODE) ';
     }
     return query;
+}
+
+
+function rankedQuery(tagList, equalsList) {
+    return 'SELECT DISTINCT c.*, ' +
+        'SUM(MATCH(t.tag) ' +
+        'AGAINST ("' + tagList.split(",").join(" ").split("]").join("+") +
+        '" IN BOOLEAN MODE)) as tscore ' +
+        'FROM Cosplay.Character c, Cosplay.Tag t ' +
+        'WHERE t.cid = c.id ' +
+        generateEqualQuery(equalsList) +
+        generateTextSearch(tagList) +
+        'GROUP BY c.id ' +
+        'ORDER BY tscore DESC ' +
+        'LIMIT 20;';
 }
 
 
