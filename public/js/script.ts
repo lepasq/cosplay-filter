@@ -8,7 +8,7 @@ function typingEvent(event): void {
 function searchCharacters(): void {
     let searchInput: HTMLInputElement = (<HTMLInputElement>(document.getElementById('search-input')));
     searchInput.placeholder = searchInput.value;
-    let tags:string = searchInput.value.split(' ').join(';');
+    let tags:string = searchInput.value.split(' ').join(';').split("+").join("]");
     searchInput.value = "";
     getCharacters(tags);
 }

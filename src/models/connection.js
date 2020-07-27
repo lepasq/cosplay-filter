@@ -25,7 +25,7 @@ pool.getRankedCharacters = (tags, callback) => {
     let equalsList = tags.split(";").filter(a => a.includes("="));
     let query = 'SELECT DISTINCT c.*, ' +
         'SUM(MATCH(t.tag) ' +
-        'AGAINST ("' + tagList.split(",").join(" ") + '" IN NATURAL LANGUAGE MODE)) as tscore ' +
+        'AGAINST ("' + tagList.split(",").join(" ").split("]").join("+") + '" IN BOOLEAN MODE)) as tscore ' +
         'FROM Cosplay.Character c, Cosplay.Tag t ' +
         'WHERE t.cid = c.id ' +
         generateEqualQuery(equalsList) +
@@ -33,6 +33,7 @@ pool.getRankedCharacters = (tags, callback) => {
         'GROUP BY c.id ' +
         'ORDER BY tscore DESC ' +
         'LIMIT 20;';
+    console.log(query)
     return pool.query(query, (err, rows) => {
         if (err) {
             throw err;
@@ -57,7 +58,7 @@ function generateTextSearch(tagList) {
     if(tagList) {
         query =
             'AND MATCH(t.tag) ' +
-            'AGAINST ("' + tagList.split(",").join(" ")  + '"  IN NATURAL LANGUAGE MODE) ';
+            'AGAINST ("' + tagList.split(",").join(" ").split("]").join("+")  + '" IN BOOLEAN MODE) ';
     }
     return query;
 }
