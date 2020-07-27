@@ -23,7 +23,7 @@ function getCharacters(tags: string): void {
 
 let entryHTML = function (param: object): string {
     return '<tr>' +
-        '<th><a href="' + addEmoji(param['image']) + '"><img class="table-image" src="' + addEmoji(param['image']) + '" alt="' + addEmoji(param['name']) + '"></a></th>' +
+        '<th><a target="_blank" rel="noopener noreferrer" href="' + addEmoji(param['image']) + '"><img class="table-image" src="' + addEmoji(param['image']) + '" alt="' + addEmoji(param['name']) + '"></a></th>' +
         '<td>' + addEmoji(param['name']) + '</td>' +
         '<td>' + addEmoji(param['genre']) + '</td>' +
         '<td>' + addEmoji(param['title']) + '</td>' +
