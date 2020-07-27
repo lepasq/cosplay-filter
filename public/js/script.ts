@@ -8,7 +8,7 @@ function typingEvent(event): void {
 function searchCharacters(): void {
     let searchInput: HTMLInputElement = (<HTMLInputElement>(document.getElementById('search-input')));
     searchInput.placeholder = searchInput.value;
-    let tags:string = searchInput.value.replace(" ", ";");
+    let tags:string = searchInput.value.split(' ').join(';');
     searchInput.value = "";
     getCharacters(tags);
 }
@@ -23,15 +23,15 @@ function getCharacters(tags: string): void {
 
 let entryHTML = function (param: object): string {
     return '<tr>' +
-        '<th><a href="' + addParam(param['image']) + '"><img class="table-image" src="' + addParam(param['image']) + '" alt="' + addParam(param['name']) + '"></a></th>' +
-        '<td>' + addParam(param['name']) + '</td>' +
-        '<td>' + addParam(param['genre']) + '</td>' +
-        '<td>' + addParam(param['title']) + '</td>' +
-        '<td>' + addParam(param['gender']) + '</td>' +
-        '<td>' + addParam(param['eyecolor']) + '</td>' +
-        '<td>' + addParam(param['haircolor']) + '</td>' +
-        '<td>' + addParam(param['height']) + '</td>' +
-        '<td>' + addParam(param['age']) + '</td>' +
+        '<th><a href="' + addEmoji(param['image']) + '"><img class="table-image" src="' + addEmoji(param['image']) + '" alt="' + addEmoji(param['name']) + '"></a></th>' +
+        '<td>' + addEmoji(param['name']) + '</td>' +
+        '<td>' + addEmoji(param['genre']) + '</td>' +
+        '<td>' + addEmoji(param['title']) + '</td>' +
+        '<td>' + addEmoji(param['gender']) + '</td>' +
+        '<td>' + addEmoji(param['eyecolor']) + '</td>' +
+        '<td>' + addEmoji(param['haircolor']) + '</td>' +
+        '<td>' + addEmoji(param['height']) + '</td>' +
+        '<td>' + addEmoji(param['age']) + '</td>' +
         '</tr>';
 }
 
@@ -47,15 +47,19 @@ function generateResult(parameters: Array<object>): void {
 }
 
 
-function addParam(param: string) {
+function addEmoji(param: string) {
     if (param == undefined) {
         return '';
     } else if(param == "Anime") {
         return ("Anime 🇯🇵");
     } else if(param == "Gaming") {
-        return ("Gaming ");
+        return ("Gaming 🎮");
     } else if(param == "Movie" || param == "Series" || param == "TV") {
-        return param + "📺 ";
+        return param + " 📺";
+    } else if(param == "Male") {
+        return ("Male ♂️");
+    } else if(param == "Female") {
+        return ("Female ♀️")
     } else {
         return param;
     }
