@@ -29,8 +29,7 @@ pool.getRankedCharacters = (tags, callback) => {
         'FROM Cosplay.Character c, Cosplay.Tag t ' +
         'WHERE t.cid = c.id ' +
         generateEqualQuery(equalsList) +
-        'AND MATCH(t.tag) ' +
-        'AGAINST ("' + tagList.split(",").join(" ")  + '"  IN NATURAL LANGUAGE MODE) ' +
+        generateTextSearch(tagList) +
         'GROUP BY c.id ' +
         'ORDER BY tscore DESC ' +
         'LIMIT 20;';
@@ -43,25 +42,22 @@ pool.getRankedCharacters = (tags, callback) => {
     });
 }
 
-/*
-SELECT DISTINCT c.*,
-       SUM(MATCH(t.tag)
-             AGAINST ('mario gaming' IN NATURAL LANGUAGE MODE)) as tscore
-FROM Cosplay.Character c, Cosplay.Tag t
-WHERE t.cid = c.id
-  AND MATCH(t.tag)
-            AGAINST ('mario gaming' IN NATURAL LANGUAGE MODE)
-GROUP BY c.id
-ORDER BY tscore DESC
-LIMIT 20;
- */
-
 
 function generateEqualQuery(equalParam) {
     let query = "";
     for(let i = 0; i<equalParam.length; i++) {
         let param =  equalParam[i].split("=");
         query += "AND " + param[0] + " ='" + param[1] + "' "
+    }
+    return query;
+}
+
+function generateTextSearch(tagList) {
+    let query = " ";
+    if(tagList) {
+        query =
+            'AND MATCH(t.tag) ' +
+            'AGAINST ("' + tagList.split(",").join(" ")  + '"  IN NATURAL LANGUAGE MODE) ';
     }
     return query;
 }
