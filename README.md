@@ -26,7 +26,7 @@ This project relies heavily on Full-text-search to return ranked queries.
     tsc public/js/script.ts
     ```
 
-2. Next you need to set up your MySQL server, up your environment variables 
+2. Next you need to set up your MySQL server, fill in your environment variables 
 and run `schema.sql`. As an example, you should have a look at `.env`:
 
     ```sh

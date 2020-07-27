@@ -18,4 +18,5 @@
 .table-image {
     min-height: 80px;
     width: auto;
+    max-height: 180px;
 }
