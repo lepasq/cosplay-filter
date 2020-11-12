@@ -11,8 +11,7 @@ apiRouter.get('/', (req, res) => {
 
 apiRouter.get('/api/characters', (req, res) => {
     let tags = req.query.tags;
-    connection.pool.getRankedCharacters(tags, (rows, err)  => {
-        // temporary workaround for 304 status code
+    connection.pool.getRankedCharacters(tags, (rows, err) => {
         if (err) {
             return res.sendStatus(500);
         }
@@ -22,8 +21,6 @@ apiRouter.get('/api/characters', (req, res) => {
         return res.send(rows);
     });
 });
-
-
 
 
 module.exports = apiRouter;
