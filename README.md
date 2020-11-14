@@ -1,5 +1,7 @@
 # Cosplay Filter
 
+![Screenshot](screenshot.png)
+
 ## About The Project
 
 This project is a website to filter anime/video/tv characters based on some
@@ -40,7 +42,10 @@ and run `schema.sql`. As an example, you should have a look at `.env`:
     CONNECTION_LIMIT=20
     ```
 
-3. Finally, start the server
+3. Next you need to change the path of your `.csv` files in the file `src/models/schema.sql` to your local path.
+
+
+4. Finally, start the server
 
     ```sh
     npm start
