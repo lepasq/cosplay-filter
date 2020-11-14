@@ -1,4 +1,5 @@
 SET FOREIGN_KEY_CHECKS=OFF;
+CREATE DATABASE IF NOT EXISTS Cosplay;
 DROP TABLE IF EXISTS Cosplay.Character;
 DROP TABLE IF EXISTS Cosplay.Tag;
 SET FOREIGN_KEY_CHECKS=ON;
@@ -13,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Cosplay.Character (
                                                  eyecolor VARCHAR(20) NOT NULL,
                                                  haircolor VARCHAR(20) NOT NULL,
                                                  height VARCHAR(15) NOT NULL,
-                                                 age VARCHAR(10) NOT NULL,
+                                                 age VARCHAR(10),
                                                  image VARCHAR(255)
 );
 
@@ -29,21 +30,25 @@ CREATE TABLE IF NOT EXISTS Cosplay.Tag (
 ALTER TABLE Cosplay.Tag
     ADD FULLTEXT INDEX cosplay_fulltext(tag);
 
-INSERT INTO Cosplay.Character (name, genre, title, gender, eyecolor, haircolor, height, age, image) VALUES
-('Mario', 'Gaming', 'Super Mario Bros', 'Male', 'blue', 'brown', 'short', 'young', 'https://i.computer-bild.de/imgs/4/7/9/4/0/8/6/Super-Mario-Daumen-hoch-745x745-afbfad29f38ce2d0.jpg'),
-('Luigi', 'Gaming', 'Super Mario Bros', 'male', 'blue', 'brown', 'tall', 'young', 'https://lh5.ggpht.com/-oECCOo84iYc/URQ_I-Lp5wI/AAAAAAAA_c0/1m2AOSliE2g/luigi%25252030th%252520birthday%25252001b_thumb%25255B2%25255D.jpg?imgmax=800');
+SET GLOBAL local_infile = 1;
 
 
-INSERT INTO Cosplay.Tag (tag, cid) VALUES
-('cap', 1),
-('red', 1),
-('mario', 1),
-('jump', 1),
-('nintendo', 1),
-('gaming', 1),
-('luigi', 1),
-('mario', 2),
-('cap', 2),
-('gaming', 2),
-('jump', 2),
-('luigi', 2);
+-- If loading the .csv files does not work, you should
+-- check your mysql configuration or import them with
+-- some sort of help tools like an IDE
+
+LOAD DATA LOCAL INFILE '/home/addo/Documents/dev/cosplay-filter/src/models/Cosplay_Character.csv'
+    INTO TABLE Cosplay.Character
+    FIELDS TERMINATED BY ','
+    ENCLOSED BY '"'
+    LINES TERMINATED BY '\n';
+
+
+
+LOAD DATA LOCAL INFILE '/home/addo/Documents/dev/cosplay-filter/src/models/Cosplay_Tag.csv'
+    INTO TABLE Cosplay.Tag
+    FIELDS TERMINATED BY ','
+    ENCLOSED BY '"'
+    LINES TERMINATED BY '\n';
+
+SET GLOBAL local_infile = 0;
